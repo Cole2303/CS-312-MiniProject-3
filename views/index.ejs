@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Blog Posts</h1>
+    <% if (user_id) { %>
+        <a href="/logout">Log Out</a>
+    <% } else { %>
+        <a href="/signup">Sign Up</a> | <a href="/signin">Sign In</a>
+    <% } %>
+
+    <% if (user_id) { %>
+    <form action="/" method="POST">
+        <label for="title">Post Title!</label>
+        <input type="text" name="title" required><br>
+
+        <label for="message">Say your piece!</label>
+        <textarea name="message" required></textarea><br>
+
+        <button type="submit">Post your post!</button>
+    </form>
+    <% } %>
+
+    <ul>
+        <% posts.forEach(post => { %>
+            <li>
+                <strong><%= post.title %></strong> by <%= post.creator_name %> on <%= post.date_created %>
+                <p><%= post.body %></p>
+                <% if (post.creator_user_id === user_id) { %>
+                    <a href="/edit/<%= post.blog_id %>">Edit</a> |
+                    <form action="/delete/<%= post.blog_id %>" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>
